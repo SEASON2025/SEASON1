@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leo Coin Task Submission</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e2f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  .back-arrow {
+      position: absolute;
+      left: 10px;
+      
+      transform: translateY(-50%);
+      font-size: 1.8rem;
+      color: #FFCC00;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFB300;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .container label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input, textarea {
+      background: #1e1e30;
+      color: #fff;
+      outline: none;
+    }
+
+    button {
+      background: #ffd700;
+      color: #29293d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #f0c907;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 400px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal button {
+      background: #ffd700;
+      color: #29293d;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal button:hover {
+      background: #f0c907;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999;
+    }
+
+    .overlay.active, .modal.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+      <a href="home.html" class="back-arrow">←</a>
+   <h1>Task Submission</h1>
+  <div class="container">
+    <form id="taskForm">
+      <label for="username">Telegram Username</label>
+      <input type="text" id="username" placeholder="Enter your Telegram username" required>
+
+      <label for="taskDescription">Task Description</label>
+      <textarea id="taskDescription" placeholder="Describe your task" rows="5" required></textarea>
+
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="modal">
+    <h3>Submission Received</h3>
+    <p>YOU WILL GET THE RESULT IN 5 HOURS.</p>
+    <button onclick="redirect()">Go to Home</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('taskForm');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+
+    // Bot and Group Details
+    const botToken = '7682496596:AAH7bjAswxdaq3rJ3Q5RdJTD0nid8LpPuAk';
+    const groupChatId = '@ddjdjdjdnfodndb';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const taskDescription = document.getElementById('taskDescription').value;
+
+      const message = `
+📤 **New Task Submission**
+- Telegram Username: ${username}
+- Task Description: ${taskDescription}
+      `;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: groupChatId, text: message })
+        });
+
+        overlay.classList.add('active');
+        modal.classList.add('active');
+      } catch (error) {
+        console.error('Error submitting the form:', error);
+        alert('Submission failed. Please try again.');
+      }
+    });
+
+    function redirect() {
+      window.location.href = 'home.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdraw - Token Requirements</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      position: relative;
+      border-bottom: 2px solid #FFCC00;
+    }
+
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: #FFCC00;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .back-arrow {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.8rem;
+      color: #FFCC00;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFB300;
+    }
+
+    .main-content {
+      margin-top: 30px;
+      padding: 30px;
+      background-color: #292929;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 800px;
+      text-align: left;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .main-content p,
+    .main-content ul {
+      margin-bottom: 20px;
+    }
+
+    .main-content ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    .main-content ul li {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: #FFCC00;
+      font-weight: bold;
+    }
+
+    .main-content ul li::before {
+      content: "✓ ";
+      color: #FFCC00;
+    }
+
+    .main-content button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background-color: #FFCC00;
+      color: #292928;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .main-content button:hover {
+      background-color: #FFB300;
+    }
+
+    .telegram-channel {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .telegram-channel a {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #0088cc;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .telegram-channel a:hover {
+      background-color: #006fa1;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .main-content {
+        width: 90%;
+        padding: 20px;
+      }
+
+      .main-content button {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+
+      .telegram-channel a {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Back Arrow Icon -->
+    <span class="back-arrow" onclick="goBack()">←</span>
+    <h1>Withdraw</h1>
+  </header>
+
+  <div class="main-content">
+    <p>To be ready to withdraw your tokens at the listing date, finish the tasks below:</p>
+
+    <ul>
+      <li>You need at least <strong>2000 tokens</strong>.</li>
+      <li>Make at least <strong>50%</strong> of your tokens by using tasks.</li>
+      <li>Buy at least <strong>2 tokens</strong>.</li>
+    </ul>
+
+    <p>And to maximize your tokens' value:</p>
+
+    <ul>
+      <li>Add at least <strong>2000 people</strong> to the Telegram channel below. The more you add the Max. you get!!</li>
+    </ul>
+
+    <p>Focus on the following:</p>
+    <ul>
+      <li><strong>Tasks</strong> (Complete them daily).</li>
+      <li><strong>Don't try cheating</strong>—it's against the rules!</li>
+      <li><strong>Like, Comment, and Share</strong> our videos or posts.</li>
+    </ul>
+
+    <p>At the listing date, 1 LEO TOKEN = <strong>$5-$13</strong>.</p>
+    <p>The listing date is <strong>April 25</strong>.</p>
+    
+    <!-- Telegram Channel Link -->
+    <div class="telegram-channel">
+      <a href="https://t.me/Leocoin_2025" target="_blank">Add people to our Telegram Channel</a>
+    </div>
+
+    <!-- My Tokens Button -->
+    <button onclick="goToMyTokens()">My Tokens</button>
+  </div>
+
+  <script>
+    // Function to navigate back to the previous page
+    function goBack() {
+      window.history.back();
+    }
+
+    // Function to navigate to the 'My Tokens' page
+    function goToMyTokens() {
+      window.location.href = 'token.html'; // Redirect to your tokens page
+    }
+  </script>
+</body>
+</html>

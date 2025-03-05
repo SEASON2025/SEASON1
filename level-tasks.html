@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Tasks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .task-buttons {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .task-buttons button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      background: #292928;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .task-buttons button:hover {
+      background: #444;
+    }
+    .daily {
+        background:#fff;
+        color:#292928;
+    }
+    
+
+ 
+    .main-section {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px rgba(255, 255, 255, 0.2);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .box p {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .box button {
+      background: #444;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .box button:hover {
+      background: #666;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #292929;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+    .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <a href="home.html" class="back-arrow">←</a>
+   <header>
+    <h1>Tasks</h1>
+  </header>
+
+  <div class="task-buttons">
+    <button  onclick="navigate('task.html')" class="daily">Daily Tasks</button>
+    <button onclick="navigate('level-tasks.html')">Level Tasks</button>
+    <button onclick="navigate('leo-tasks.html')">Leo Tasks</button>
+    <button onclick="navigate('promotion-tasks.html')">Promotion Tasks</button>
+    <button onclick="navigate('promotion-tasks.html')">Promotion Tasks</button>
+  </div>
+  
+
+  <div class="main-section" id="main-section">
+    <div class="box" id="cub-box">
+      <h3>Cub Level</h3>
+      <p>Complete the level to get 2000 coins.</p>
+      <button onclick="claimReward('cub', 2000, 10000)">Claim</button>
+    </div>
+
+    <div class="box" id="jeveni-box">
+      <h3>Javaeli Level</h3>
+      <p>Complete the level to get 3000 coins.</p>
+      <button onclick="claimReward('jeveni', 3000, 20000)">Claim</button>
+    </div>
+
+    <div class="box" id="sub-adult-box">
+      <h3>Sub-Adult Level</h3>
+      <p>Complete the level to get 4000 coins.</p>
+      <button onclick="claimReward('sub-adult', 4000, 40000)">Claim</button>
+    </div>
+
+    <div class="box" id="adult-box">
+      <h3>Adult Level</h3>
+      <p>Complete the level to get 5000 coins.</p>
+      <button onclick="claimReward('adult', 5000, 60000)">Claim</button>
+    </div>
+
+    <div class="box" id="leo-box">
+      <h3>Leo Level</h3>
+      <p>Complete the level to get 8000 coins.</p>
+      <button onclick="claimReward('leo', 8000, 100000)">Claim</button>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">Reward claimed successfully!</div>
+  <div id="error-modal" class="modal">First finish the level!</div>
+
+  <script>
+    const localStorageKey = "leocoins";
+
+    function claimReward(level, reward, requiredCoins) {
+      const coins = parseInt(localStorage.getItem(localStorageKey) || "0", 10);
+      const button = document.querySelector(`#${level}-box button`);
+
+      if (coins >= requiredCoins) {
+        // Add reward to leocoins
+        const newCoins = coins + reward;
+        localStorage.setItem(localStorageKey, newCoins);
+
+        // Disable the button
+        button.disabled = true;
+        button.innerText = "Claimed";
+
+        // Show success modal
+        const modal = document.getElementById("modal");
+        modal.classList.add("active");
+        setTimeout(() => modal.classList.remove("active"), 2000);
+
+        // Save claim status
+        localStorage.setItem(`${level}-claimed`, "true");
+      } else {
+        // Show error modal
+        const errorModal = document.getElementById("error-modal");
+        errorModal.classList.add("active");
+        setTimeout(() => errorModal.classList.remove("active"), 2000);
+      }
+    }
+    function navigate(page) {
+  window.location.href = page;
+}
+    function checkClaimedLevels() {
+      const levels = ["cub", "jeveni", "sub-adult", "adult", "leo"];
+      levels.forEach((level) => {
+        if (localStorage.getItem(`${level}-claimed`) === "true") {
+          const button = document.querySelector(`#${level}-box button`);
+          button.disabled = true;
+          button.innerText = "Claimed";
+        }
+      });
+    }
+
+    // Check claimed levels on page load
+    window.onload = checkClaimedLevels;
+  </script>
+</body>
+</html>

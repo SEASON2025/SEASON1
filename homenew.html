@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEO Coin Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, black, darkblue);
+      color: white;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: black;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    header img {
+      height: 40px;
+    }
+
+    .level-box {
+      text-align: center;
+      margin: 20px auto;
+      padding: 10px;
+      background: linear-gradient(135deg, silver, white);
+      color: black;
+      font-size: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .coins-box {
+      padding: 20px;
+      background: white;
+      color: black;
+      margin: 10px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+
+    .spin-section {
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .spin-wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #f00 0% 12.5%,
+        #ff0 12.5% 25%,
+        #0f0 25% 37.5%,
+        #00f 37.5% 50%,
+        #f0f 50% 62.5%,
+        #0ff 62.5% 75%,
+        #ff8000 75% 87.5%,
+        #fff 87.5% 100%
+      );
+      position: relative;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 2s ease-out;
+    }
+
+    .spin-wheel span {
+      position: absolute;
+      transform-origin: 50% 100%;
+      font-weight: bold;
+      color: black;
+      font-size: 14px;
+      text-shadow: 1px 1px 2px white;
+    }
+
+    .spin-wheel span:nth-child(1) { transform: rotate(22.5deg) translate(90px); }
+    .spin-wheel span:nth-child(2) { transform: rotate(67.5deg) translate(90px); }
+    .spin-wheel span:nth-child(3) { transform: rotate(112.5deg) translate(90px); }
+    .spin-wheel span:nth-child(4) { transform: rotate(157.5deg) translate(90px); }
+    .spin-wheel span:nth-child(5) { transform: rotate(202.5deg) translate(90px); }
+    .spin-wheel span:nth-child(6) { transform: rotate(247.5deg) translate(90px); }
+    .spin-wheel span:nth-child(7) { transform: rotate(292.5deg) translate(90px); }
+    .spin-wheel span:nth-child(8) { transform: rotate(337.5deg) translate(90px); }
+
+    .spin-btn {
+      padding: 15px 30px;
+      background: linear-gradient(135deg, silver, white);
+      color: black;
+      font-size: 18px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .spin-btn:hover {
+      background: linear-gradient(135deg, white, silver);
+      transform: scale(1.1);
+    }
+
+    .spin-btn:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-around;
+      background: black;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .footer button {
+      background: linear-gradient(135deg, silver, white);
+      border: none;
+      border-radius: 25px;
+      color: black;
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .footer button:hover {
+      background: linear-gradient(135deg, white, silver);
+      transform: scale(1.1);
+    }
+    header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, #000000, #4b0082, #ff1493);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 10;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 80% 100%, 20% 100%, 0 80%);
+    animation: headerAnimation 5s ease-out infinite alternate;
+  }
+  .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="home.html" class="back-arrow">←</a>
+    <div class="level-box">Level: CUB 🦁</div>
+  </header>
+  <main>
+    <div class="coins-box">
+      <h2>LEO Coins: <span id="coins">0</span> 🪙</h2>
+    </div>
+    <div class="spin-section">
+      <h3>Spin the Wheel</h3>
+      <div class="spin-wheel" id="spin-wheel">
+        <span>0</span>
+        <span>-100</span>
+        <span>-200</span>
+        <span>100</span>
+        <span>200</span>
+        <span>300</span>
+        <span>500</span>
+        <span>1000</span>
+      </div>
+      <button class="spin-btn" id="spin-btn">Spin</button>
+    </div>
+  </main>
+  <footer class="footer">
+    <button onclick="location.href='task.html'">📋 Task</button>
+    <button onclick="location.href='home.html'">🏠 Home</button>
+    <button onclick="location.href='sell.html'">💰 Sell</button>
+    <button onclick="location.href='game.html'">🎮 Game</button>
+  </footer>
+
+  <script>
+    const spinBtn = document.getElementById('spin-btn');
+    const coinsDisplay = document.getElementById('coins');
+    const spinWheel = document.getElementById('spin-wheel');
+    const spinResults = [0, -100, -200, 100, 200, 300, 500, 1000];
+
+    if (!localStorage.getItem('leocoins')) localStorage.setItem('leocoins', 0);
+    if (!localStorage.getItem('spinCooldown')) localStorage.setItem('spinCooldown', 0);
+
+    const updateCoins = () => coinsDisplay.textContent = localStorage.getItem('leocoins');
+
+    const startCooldown = () => {
+      const cooldownDuration = 45 * 60 * 1000; 
+      const endTime = Date.now() + cooldownDuration;
+      localStorage.setItem('spinCooldown', endTime);
+      updateCountdown();
+    };
+
+    const updateCountdown = () => {
+      const endTime = parseInt(localStorage.getItem('spinCooldown'), 10);
+      const remainingTime = endTime - Date.now();
+
+      if (remainingTime > 0) {
+        spinBtn.disabled = true;
+        const minutes = Math.floor(remainingTime / 60000);
+        const seconds = Math.floor((remainingTime % 60000) / 1000);
+        spinBtn.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        setTimeout(updateCountdown, 1000);
+      } else {
+        spinBtn.disabled = false;
+        spinBtn.textContent = 'Spin';
+        localStorage.setItem('spinCooldown', 0);
+      }
+    };
+
+    const spinWheelHandler = () => {
+      spinBtn.disabled = true;
+      const randomIndex = Math.floor(Math.random() * spinResults.length);
+      const randomDegree = 3600 + randomIndex * 45;
+      spinWheel.style.transform = `rotate(${randomDegree}deg)`;
+
+      setTimeout(() => {
+        const result = spinResults[randomIndex];
+        const currentCoins = parseInt(localStorage.getItem('leocoins'), 10);
+        localStorage.setItem('leocoins', currentCoins + result);
+        updateCoins();
+        startCooldown();
+      }, 3000);
+    };
+
+    spinBtn.addEventListener('click', spinWheelHandler);
+    updateCoins();
+    if (localStorage.getItem('spinCooldown') > Date.now()) updateCountdown();
+  </script>
+</body>
+</html>

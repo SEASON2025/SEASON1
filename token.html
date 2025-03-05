@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Tokens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Riot&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: black;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFCC00;
+    }
+
+    /* Display Boxes */
+    .display-box {
+      background: #292929;
+      color: white;
+      padding: 15px;
+      margin: 10px 0;
+      width: 300px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .display-box h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .display-box .value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #6DFF2F;
+    }
+
+    /* Estimated Earning Box */
+    .estimated-earning {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      margin-top: 20px;
+    }
+
+    .estimated-earning .earning-box {
+      background: #292929;
+      color: white;
+      padding: 10px;
+      width: 130px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .estimated-earning .earning-box h3 {
+      margin-bottom: 5px;
+    }
+
+    .estimated-earning .earning-box .value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #FFCC00;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- Back Arrow Icon -->
+    <span class="back-arrow" onclick="goHome()">←</span>
+    <h1>Your Tokens</h1>
+  </header>
+
+  <!-- Display Tokens -->
+  <div class="display-box">
+    <h2>Earned Tokens</h2>
+    <div class="value" id="earned-tokens"></div>
+  </div>
+
+  <div class="display-box">
+    <h2>Buyed Tokens</h2>
+    <div class="value" id="buyed-tokens"></div>
+  </div>
+
+  <div class="display-box">
+    <h2>Total Tokens</h2>
+    <div class="value" id="total-tokens"></div>
+  </div>
+
+  <!-- Estimated Earning -->
+  <div class="estimated-earning">
+    <div class="earning-box">
+      <h3>Min</h3>
+      <div class="value" id="min-earning"></div>
+    </div>
+    <div class="earning-box">
+      <h3>Max</h3>
+      <div class="value" id="max-earning"></div>
+    </div>
+  </div>
+
+  <script>
+    // Function to go home (redirect to home page)
+    function goHome() {
+      window.location.href = 'home.html';
+    }
+
+    // Function to calculate and display the tokens and earnings
+    function calculateTokens() {
+      const leocoins = parseInt(localStorage.getItem('leocoins')) || 0;
+      const leobuyedtokens = parseInt(localStorage.getItem('leobuyedtokens')) || 0;
+
+      // Earned Tokens
+      const earnedTokens = leocoins / 70000;
+      document.getElementById('earned-tokens').innerText = earnedTokens.toFixed(4);
+
+      // Buyed Tokens
+      document.getElementById('buyed-tokens').innerText = leobuyedtokens;
+
+      // Total Tokens
+      const totalTokens = earnedTokens + leobuyedtokens;
+      document.getElementById('total-tokens').innerText = totalTokens.toFixed(4);
+
+      // Estimated Earnings
+      const minEarning = (earnedTokens * 5) + (leobuyedtokens * 7);
+      const maxEarning = (earnedTokens * 9) + (leobuyedtokens * 13);
+
+      document.getElementById('min-earning').innerText = '$' + minEarning.toFixed(2);
+      document.getElementById('max-earning').innerText = '$' + maxEarning.toFixed(2);
+    }
+
+    // Run calculation on page load
+    window.onload = calculateTokens;
+  </script>
+
+</body>
+</html>

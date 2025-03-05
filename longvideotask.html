@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rewards Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    .main-section {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px 0;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .box p {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .box input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #292929;
+      color: #fff;
+    }
+
+    .box button {
+      background: #292928;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .box button:hover {
+      background: #444;
+    }
+
+    .counter {
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #292929;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+    .back-arrow           {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <header>
+    
+    <a href="special-tasks.html" class="back-arrow">←</a>
+    <h1>Rewards Page</h1>
+  </header>
+
+  <div class="main-section">
+    <!-- Quarter Reward Section -->
+    <div class="box">
+      <h3>Quarter Reward</h3>
+      <p>Subscribe to our channel and watch the video corresponding to your counter value for this reward.</p>
+      <a href="https://www.youtube.com/channel/UC-QuarterReward" target="_blank">
+        <button>Go to YouTube Channel</button>
+      </a>
+      <input type="text" id="quarter-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="quarter-counter">0</span></div>
+      <button onclick="claimReward('quarter')">Claim</button>
+    </div>
+
+    <!-- Boss Reward Section -->
+    <div class="box">
+      <h3>Boss Reward</h3>
+      <p>Earn Boss rewards by subscribing and watching the corresponding video on our second channel.</p>
+      <a href="https://www.youtube.com/channel/UC-BossReward" target="_blank">
+        <button>Go to YouTube Channel</button>
+      </a>
+      <input type="text" id="boss-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="boss-counter">0</span></div>
+      <button onclick="claimReward('boss')">Claim</button>
+    </div>
+
+    <!-- Emperor Reward Section -->
+    <div class="box">
+      <h3>Emperor Reward</h3>
+      <p>For Emperor rewards, subscribe and find your code in the videos of our Third  channel.</p>
+      <a href="https://www.youtube.com/channel/UC-EmperorReward" target="_blank">
+        <button>Go to YouTube Channel</button>
+      </a>
+      <input type="text" id="emperor-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="emperor-counter">0</span></div>
+      <button onclick="claimReward('emperor')">Claim</button>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">Claim Successful!</div>
+  <div id="error-modal" class="modal">Incorrect code. Try again.</div>
+
+  <script>
+    const rewardWords = {
+      quarter: [
+        "subscribeyoutubequarter1", "quarterrewardready2", "quarterclaimcode3", "quarterrewardview4", 
+        "getquarterreward5", "quarterchannelcode6", "viewandclaim7", "quarterclaimtext8", 
+        "exclusivequarter9", "subscribequarter10", "readytoviewquarter11", "quartervideo12", 
+        "quarterclaimhere13", "watchrewardquarter14", "youtubecodequarter15", "viewandearn16", 
+        "quarterclaimvideo17", "getitquarter18", "claimnowquarter19", "quarterclaim20", 
+        "quarterchannelreward21", "subandwatchquarter22", "quarterexclusive23", "codequarter24", 
+        "watchandearnquarter25", "quarterwatchcode26", "rewardforquarter27", "claimreward28", 
+        "watchquarter29", "claimnow30"
+      ],
+      boss: [
+        "bosschannelready1", "bosscodeclaim2", "bossrewardview3", "getbossreward4", 
+        "exclusiveboss5", "subandclaimboss6", "readytoviewboss7", "bosschannelcode8", 
+        "watchbossreward9", "rewardbossvideo10", "bosscodevideo11", "bossview12", 
+        "getitboss13", "subscribeandviewboss14", "exclusivebossreward15", "claimrewardboss16", 
+        "bossunlock17", "bosspower18", "bossrewardclaim19", "channelcodeboss20", 
+        "subbossnow21", "viewclaimboss22", "codebossreward23", "earnbosscoins24", 
+        "rewardfortheboss25", "bossrewardvideo26", "viewandearnboss27", "bossvideoaccess28", 
+        "bossclaim29", "earnnowboss30"
+      ],
+      emperor: [
+        "emperorcode1", "subscribedemperor2", "watchforrewards3", "emperorunlock4", 
+        "viewemperorchannel5", "claimemperorreward6", "emperorexclusive7", "subtoview8", 
+        "emperorvideo9", "emperorchannelcode10", "rewardsforviews11", "emperorpower12", 
+        "subscribetowin13", "emperorrewards14", "codeemperorclaim15", "unlockemperor16", 
+        "viewtoreward17", "emperorexclusivevideo18", "rewardsfortheemperor19", "watchandearn20", 
+        "emperorunlockreward21", "viewemperorvideo22", "claimemperorcoins23", "emperorvideoaccess24", 
+        "rewardforviewing25", "claimexclusiveemperor26", "subscribeforemperor27", "emperorrewardsview28", 
+        "watchtheemperor29", "exclusiveemperor30"
+      ],
+    };
+
+    const rewardCounters = JSON.parse(localStorage.getItem("rewardCounters")) || { quarter: 0, boss: 0, emperor: 0 };
+
+    function updateCountersUI() {
+      document.getElementById("quarter-counter").innerText = rewardCounters.quarter;
+      document.getElementById("boss-counter").innerText = rewardCounters.boss;
+      document.getElementById("emperor-counter").innerText = rewardCounters.emperor;
+    }
+
+    updateCountersUI();
+
+    function claimReward(type) {
+      const input = document.getElementById(`${type}-code`).value.trim();
+      const correctCode = rewardWords[type][rewardCounters[type]];
+
+      if (input === correctCode) {
+        const modal = document.getElementById("modal");
+        modal.classList.add("active");
+        setTimeout(() => modal.classList.remove("active"), 2000);
+
+        rewardCounters[type]++;
+        document.getElementById(`${type}-counter`).innerText = rewardCounters[type];
+        localStorage.setItem("rewardCounters", JSON.stringify(rewardCounters));
+
+        // Add 50,000 coins to leocoins value in local storage
+        let leocoins = parseInt(localStorage.getItem("leocoins")) || 0;
+        leocoins += 50000;
+        localStorage.setItem("leocoins", leocoins);
+      } else {
+        const errorModal = document.getElementById("error-modal");
+        errorModal.classList.add("active");
+        setTimeout(() => errorModal.classList.remove("active"), 2000);
+      }
+    }
+  </script>
+</body>
+</html>

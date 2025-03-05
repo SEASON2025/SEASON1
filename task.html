@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Riot&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: black;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .task-buttons {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .task-buttons button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      background: #292928;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .task-buttons button:hover {
+      background: #444;
+    }
+    .daily {
+        background:#fff;
+        color:#292928;
+    }
+
+    .main-section {
+      width: 90%;
+      max-width: 800px;
+    }
+
+    .box {
+      background:rgba(255,255,255, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .box p {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .box input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #292929;
+      color: #fff;
+    }
+
+    .box button {
+      background: #000000;
+      color: white;
+      font-size:19px;
+      font-weight:bold;
+      border: none;
+      padding: 10px 15px;
+      
+      cursor: pointer;
+      margin:6px;
+      border-radius:20px;
+      
+    }
+
+    .counter {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #292929;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+    .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <a href="home.html" class="back-arrow">←</a>
+
+
+  <header>
+    <h1>Tasks</h1>
+  </header>
+
+  <div class="task-buttons">
+    <button  onclick="navigate('task.html')" class="daily">Daily Tasks</button>
+    <button onclick="navigate('level-tasks.html')">Level Tasks</button>
+    <button onclick="navigate('leo-tasks.html')">Leo Tasks</button>
+    <button onclick="navigate('promotion-tasks.html')">Promotion Tasks</button>
+    <button onclick="navigate('special-tasks.html')">Special Tasks</button>
+  </div>
+
+  <div class="main-section" id="main-section">
+    <h2>Daily Tasks</h2>
+    <div id="daily-preys" class="box">
+      <h3>DAILY PREYS</h3>
+      <p>Get the code from the videos we upload on our YouTube channel.</p>
+      <a href="https://youtube.com/@leocoin-2025?si=AMq6GlcV-xAawm-g" target="_blank">
+        <button>Watch YouTube Video</button>
+      </a>
+      <input type="text" id="preys-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="preys-counter">0</span></div>
+      <button onclick="claimTask('preys')">Claim</button>
+    </div>
+
+    <div id="daily-gets" class="box">
+      <h3>DAILY GETS</h3>
+      <p>Get the code from our Telegram group.</p>
+      <a href="https://t.me/Leocoin_2025" target="_blank">
+        <button>Visit Telegram</button>
+      </a>
+      <input type="text" id="gets-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="gets-counter">0</span></div>
+      <button onclick="claimTask('gets')">Claim</button>
+    </div>
+
+    <div id="daily-funny" class="box">
+      <h3>DAILY FUNNY</h3>
+      <p>Get the code from the funny Instagram videos we post. like them also.</p>
+      <a href="https://www.instagram.com/leocoin2025?igsh=N2N1YjA4MTBqcHFo" target="_blank">
+        <button>Visit Instagram</button>
+      </a>
+      <input type="text" id="funny-code" placeholder="Enter the code here">
+      <div class="counter">Counter: <span id="funny-counter">0</span></div>
+      <button onclick="claimTask('funny')">Claim</button>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">Claim Successful!</div>
+  <div id="error-modal" class="modal">Incorrect code. Try again.</div>
+
+  <script>
+    const words = {
+  preys: [
+    "tcreus", "apelp", "rdwi", "tca", "lenpo", "eshou", "tlcael", "ginwlok", "arhd", "frlieu",
+    "dgoro", "ebtla", "ksoo", "drcih", "sittr", "nyfdri", "tulgerab", "vtigiae", "lbmae", "owndwi",
+    "tacbho", "epahr", "xlpea", "ndwki", "ingdre", "ileomn", "srteom", "ogld", "rpecih", "roerr",
+    // Complete list here...
+  ],
+  gets: [
+    "mcielr", "tepmsa", "cdianl", "rgneo", "vloae", "unrtai", "psurle", "oonabl", "eocssn", "gsnari",
+    "ladse", "oblgtin", "kricqu", "fhsi", "edblur", "nosipol", "inmeat", "ezrpeo", "wfolre", "hlitfg",
+    // Complete list here...
+  ],
+  funny: [
+    "adzorn", "rgdaen", "sruelb", "aktser", "lgriht", "bdrega", "aopsl", "mitlbu", "drofen", "rewtih",
+    "ncdlio", "raefcl", "pnsio", "yflorw", "vrazti", "lcinke", "oprast", "udsybt", "gtihnr", "ooitnp",
+    // Complete list here...
+  ],
+};
+
+// Retrieve counters from localStorage or initialize them
+const counters = JSON.parse(localStorage.getItem("taskCounters")) || { preys: 0, gets: 0, funny: 0 };
+const localStorageKey = "leocoins";
+
+// Update UI with saved counter values
+function updateCountersUI() {
+  document.getElementById("preys-counter").innerText = counters.preys;
+  document.getElementById("gets-counter").innerText = counters.gets;
+  document.getElementById("funny-counter").innerText = counters.funny;
+}
+updateCountersUI();
+
+function navigate(page) {
+  window.location.href = page;
+}
+
+function claimTask(type) {
+  const inputId = `${type}-code`;
+  const counterId = `${type}-counter`;
+  const codeInput = document.getElementById(inputId).value.trim();
+  const correctCode = words[type][counters[type]];
+
+  if (codeInput === correctCode) {
+    const modal = document.getElementById("modal");
+    modal.classList.add("active");
+    setTimeout(() => modal.classList.remove("active"), 2000);
+
+    // Increment counter
+    counters[type]++;
+    document.getElementById(counterId).innerText = counters[type];
+
+    // Save updated counters to localStorage
+    localStorage.setItem("taskCounters", JSON.stringify(counters));
+
+    // Update Leo coins
+    let coins = parseInt(localStorage.getItem(localStorageKey) || "0", 10);
+    coins += 20000;
+    localStorage.setItem(localStorageKey, coins);
+  } else {
+    const errorModal = document.getElementById("error-modal");
+    errorModal.classList.add("active");
+    setTimeout(() => errorModal.classList.remove("active"), 2000);
+  }
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leo Coin Video Promotion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;700&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e2f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      color: #ffd700;
+    }
+
+    .container p {
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input, textarea {
+      background: #1e1e30;
+      color: #fff;
+      outline: none;
+    }
+
+    button {
+      background: #ffd700;
+      color: #29293d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #f0c907;
+    }
+
+    #thumbnailPreview {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 400px;
+      background: #29293d;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      margin-bottom: 20px;
+    }
+
+    .modal button {
+      background: #ffd700;
+      color: #29293d;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal button:hover {
+      background: #f0c907;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999;
+    }
+
+    .overlay.active, .modal.active {
+      display: block;
+    }
+    .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <a href="task.html" class="back-arrow">←</a>
+  <h1>Leo Coin Video Promotion</h1>
+  <div class="container">
+    <h2>Submit Your Video</h2>
+    <p>
+      Make a video about Leo Coin and publish it on social media. Gain at least 10,000 users and share the link here.
+      Rewards range from <b>50,000 to 100,000 Leocoins!</b>
+    </p>
+    <form id="promotionForm">
+      <label for="username">Telegram Username</label>
+      <input type="text" id="username" placeholder="Enter your Telegram username" required>
+
+      <label for="videoLink">Video Link</label>
+      <input type="url" id="videoLink" placeholder="Enter your video link" required>
+
+      <label for="description">Description</label>
+      <textarea id="description" placeholder="Enter a brief description of your video" rows="5" required></textarea>
+
+      <label for="thumbnail">Video Thumbnail</label>
+      <input type="file" id="thumbnail" accept="image/*" required>
+      <img id="thumbnailPreview" alt="Thumbnail Preview">
+
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="modal">
+    <h3>Submission Received!</h3>
+    <p>Your submission has been received. You will get a response within 5 hours. Your reward can range from <b>50,000</b> to <b>100,000</b> Leocoins!</p>
+    <button onclick="redirect()">Go to Promotion Password</button>
+  </div>
+
+  <!-- Error Modal -->
+  <div class="modal" id="errorModal">
+    <h3>Error</h3>
+    <p id="errorMessage"></p>
+    <button onclick="closeErrorModal()">Close</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('promotionForm');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+    const errorModal = document.getElementById('errorModal');
+    const errorMessage = document.getElementById('errorMessage');
+    const thumbnailInput = document.getElementById('thumbnail');
+    const thumbnailPreview = document.getElementById('thumbnailPreview');
+
+    // Bot and Group Details
+    const botToken = '7682496596:AAH7bjAswxdaq3rJ3Q5RdJTD0nid8LpPuAk';
+    const groupChatId = '@ddjdjdjdnfodndb';
+
+    thumbnailInput.addEventListener('change', () => {
+      const file = thumbnailInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          thumbnailPreview.src = reader.result;
+          thumbnailPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        thumbnailPreview.style.display = 'none';
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const videoLink = document.getElementById('videoLink').value;
+      const description = document.getElementById('description').value;
+      const thumbnail = thumbnailInput.files[0];
+
+      if (!thumbnail) {
+        showError('Please upload a video thumbnail.');
+        return;
+      }
+
+      const password = generatePassword(19); // Generate a 19-character password
+      localStorage.setItem('propassword', password); // Save password in local storage
+
+      const formData = new FormData();
+      formData.append('chat_id', groupChatId);
+      formData.append('caption', `
+📤 **New Video Submission**
+- Telegram Username: ${username}
+- Video Link: ${videoLink}
+- Description: ${description}
+- Promotion Password: ${password}
+      `);
+      formData.append('photo', thumbnail);
+
+      try {
+        await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        });
+
+        overlay.classList.add('active');
+        modal.classList.add('active');
+      } catch (error) {
+        showError('Error submitting the form. Please try again.');
+        console.error(error);
+      }
+    });
+
+    function redirect() {
+      window.location.href = 'promotionpassword.html';
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorModal.classList.add('active');
+      overlay.classList.add('active');
+    }
+
+    function closeErrorModal() {
+      errorModal.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    function generatePassword(length) {
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset.charAt(randomIndex);
+      }
+      return password;
+    }
+  </script>
+</body>
+</html>

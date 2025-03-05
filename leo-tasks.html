@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leo Tasks - Earn Leocoins</title>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;700&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .task-buttons {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .task-buttons button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      background: #292928;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .task-buttons button:hover {
+      background: #444;
+    }
+
+    .main-section {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    .task-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .task-box h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .task-box p {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .task-box button {
+      background: #292928;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .task-box button:hover {
+      background: #444;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+      background: #292929;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+    .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.back-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+  </style>
+</head>
+<body>
+  <a href="home.html" class="back-arrow">←</a>
+  <header>
+    <h1>Tasks</h1>
+  </header>
+
+  <div class="task-buttons">
+    <button  onclick="navigate('task.html')" class="daily">Daily Tasks</button>
+    <button onclick="navigate('level-tasks.html')">Level Tasks</button>
+    <button onclick="navigate('leo-tasks.html')">Leo Tasks</button>
+    <button onclick="navigate('promotion-tasks.html')">Promotion Tasks</button>
+    <button onclick="navigate('promotion-tasks.html')">Promotion Tasks</button>
+  </div>
+
+  <div class="main-section">
+    <h2>Earn Leocoins</h2>
+
+    <!-- Tasks for Telegram -->
+    <div class="task-box" id="task1">
+      <h3>Task 1 : Join LEOCOIN Telegram Channel</h3>
+      <p>Join our <a href="https://t.me/Leocoin_2025" target="_blank">CHANNEL 1</a>.</p>
+      <button onclick="completeTask('Join Telegram #1', 15000, 'https://t.me/Leocoin_2025')">Claim 15,000 Leocoins</button>
+    </div>
+
+    <div class="task-box" id="task2">
+      <h3>Task 2 : Join Leo Coin Community</h3>
+      <p>Join our <a href="https://t.me/Leocoincommunity2025" target="_blank">Join Our Community</a>.</p>
+      <button onclick="completeTask('Join Telegram #2', 15000, 'https://t.me/Leocoincommunity2025')">Claim 15,000 Leocoins</button>
+    </div>
+
+    <div class="task-box" id="task3">
+      <h3>Task 3: Join Our News Channel</h3>
+      <p>Join our <a href="https://t.me/LeocoinBroadcastingCorporation" target="_blank">Join Our News Channel</a>.</p>
+      <button onclick="completeTask('Join Telegram #3', 15000, 'https://t.me/LeocoinBroadcastingCorporation')">Claim 15,000 Leocoins</button>
+    </div>
+
+    <!-- Tasks for Instagram -->
+    <div class="task-box" id="task4">
+      <h3>Task 4: Follow LEO COIN INSTAGRAM CHANNEL</h3>
+      <p>Follow us on <a href="https://www.instagram.com/leocoin2025?igsh=N2N1YjA4MTBqcHFo" target="_blank">Instagram</a>.</p>
+      <button onclick="completeTask('Follow Instagram #1', 20000, 'https://www.instagram.com/leocoin2025?igsh=N2N1YjA4MTBqcHFo')">Claim 20,000 Leocoins</button>
+    </div>
+
+    
+
+    
+
+    <!-- Tasks for YouTube -->
+    <div class="task-box" id="task7">
+      <h3>Task 5:</h3>
+      <p>Subscribe to our LEOCOIN YOUTUBE CHANNEL.<a href="https://youtube.com/@leocoin-2025?si=AMq6GlcV-xAawm-g" target="_blank">Subscribe</a>.</p>
+      <button onclick="completeTask('Subscribe YouTube #1', 25000, 'https://youtube.com/@leocoin-2025?si=AMq6GlcV-xAawm-g')">Claim 25,000 Leocoins</button>
+    </div>
+
+    <div class="task-box" id="task8">
+      <h3>Task 6: Subscribe Our YouTube Community</h3>
+      <p>Subscribe to our <a href="https://youtube.com/@leocoincommunity?feature=shared" target="_blank">Subscribe</a>.</p>
+      <button onclick="completeTask('Subscribe YouTube #2', 25000, 'https://youtube.com/@leocoincommunity?feature=shared')">Claim 25,000 Leocoins</button>
+    </div>
+
+    <div class="task-box" id="task9">
+      <h3>Task 7: Subscribe Our Third YouTube Channel</h3>
+      <p>Subscribe to our <a href="https://youtube.com/@leoking-z1s?si=FWOZeYyVR4pOxW7L" target="_blank">YouTube channel</a>.</p>
+      <button onclick="completeTask('Subscribe YouTube #3', 25000, 'https://youtube.com/@leoking-z1s?si=FWOZeYyVR4pOxW7L')">Claim 25,000 Leocoins</button>
+    </div>
+
+
+
+
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="modal">
+    <h3 id="modal-title"></h3>
+    <p id="modal-message"></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+
+  <script>
+  function getUserID() {
+    let userID = localStorage.getItem("userID");
+    if (!userID) {
+      userID = "user_" + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem("userID", userID);
+    }
+    return userID;
+  }
+
+  function getTaskStatus(taskName) {
+    const userID = getUserID();
+    return localStorage.getItem(`task_${taskName}_${userID}`) || "not_claimed";
+  }
+
+  function setTaskStatus(taskName, status) {
+    const userID = getUserID();
+    localStorage.setItem(`task_${taskName}_${userID}`, status);
+  }
+
+  function getLeocoins() {
+    return parseInt(localStorage.getItem("leocoins") || "0");
+  }
+
+  function setLeocoins(amount) {
+    localStorage.setItem("leocoins", amount);
+    updateCoinDisplay(amount);
+  }
+
+  function updateCoinDisplay(amount) {
+      // Find the element with the ID "coin-count" and update its text.
+      const coinCountElement = document.getElementById("coin-count");
+      if (coinCountElement) {
+          coinCountElement.innerText = amount; // Update the displayed coin count
+      } else {
+          console.warn("Element with ID 'coin-count' not found.  Make sure it exists in your HTML to show the current Leocoin amount.");
+      }
+  }
+
+  function completeTask(taskName, reward, url) {
+      const buttonElement = event.target; // Get the button that was clicked
+
+      if (getTaskStatus(taskName) === "claimed") {
+          window.open(url, "_blank"); // Open the URL if already claimed
+          return;
+      }
+
+      window.open(url, "_blank"); // Open URL for claim
+
+      setTimeout(() => {
+          setTaskStatus(taskName, "claimed");
+
+          buttonElement.innerText = "Claimed";
+          buttonElement.disabled = true;
+
+          const newBalance = getLeocoins() + reward;
+          setLeocoins(newBalance);
+
+          showModal("Task Completed", `You have earned ${reward} Leocoins!`);
+      }, 8000); // Simulate a delay, increase if needed.
+  }
+
+
+  function showModal(title, message) {
+      document.getElementById("modal-title").innerText = title;
+      document.getElementById("modal-message").innerText = message;
+      document.getElementById("overlay").style.display = "block"; // Show the overlay
+      document.getElementById("modal").style.display = "block";   // Show the modal
+  }
+
+  function closeModal() {
+      document.getElementById("overlay").style.display = "none"; // Hide the overlay
+      document.getElementById("modal").style.display = "none";   // Hide the modal
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+      // Initialize Leocoins on page load
+      const initialLeocoins = getLeocoins();
+      setLeocoins(initialLeocoins); // Ensures coin display is up-to-date
+
+      // Check task statuses and update buttons
+      document.querySelectorAll(".task-box button").forEach((button) => {
+          const taskName = button.getAttribute("onclick").match(/completeTask\('([^']+)'/)[1]; // Extract taskName
+          if (getTaskStatus(taskName) === "claimed") {
+              button.innerText = "Claimed";
+              button.disabled = true;
+          }
+      });
+  });
+
+    function navigate(url) {
+        window.location.href = url;
+    }
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+

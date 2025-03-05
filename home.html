@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeoCoins</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom right, #1e1e2f, #29293d);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #29293d;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-icon,
+    .menu-icon {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #ffd700, #ffa500);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .animate-text {
+      font-size: 1.7rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500;
+    }
+
+    .coin-display {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
+      transition: transform 0.3s ease;
+    }
+
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hexagon-button {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      background: url('button.jpg') no-repeat center center;
+      background-size: cover;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .hexagon-button:hover {
+      transform: scale(1.1);
+    }
+
+    .tube-container {
+      position: relative;
+      width: 300px;
+      height: 40px;
+      background: #333;
+      border-radius: 50px;
+      border: 5px solid #ffd700;
+      overflow: hidden;
+      margin-top: 20px;
+      box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);
+    }
+
+    .tube-fluid {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, #ffa500, #ffd700);
+      height: 0%;
+      transition: height 0.3s ease;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 250px;
+      height: 100%;
+      background: #29293d;
+      color: white;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(100%);
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar button {
+      background: #ffd700;
+      color: #29293d;
+      border: none;
+      margin: 10px 0;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    .sidebar .close-btn {
+      align-self: flex-end;
+      background: #ff0000;
+      color: white;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #29293d;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .footer button {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(to bottom, #ffd700, #ffa500);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      border: none;
+      cursor: pointer;
+    }
+
+    .bubble {
+      position: absolute;
+      background: #ffd700;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: moveBubble 2s forwards;
+    }
+
+    @keyframes moveBubble {
+      to {
+        transform: translateY(-250px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="profile-icon" onclick="redirectToProfile()">👤</div>
+    <div class="animate-text">LEOCOINS</div>
+    <div class="level-box">Level: <span id="levelDisplay">CUB 🦁</span></div>
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+  </header>
+
+  <main class="main">
+    <div class="coin-display" id="coinDisplay">Leocoins: 0</div>
+    <div class="hexagon-button" onclick="updateCoins()">  </div>
+    <div class="tube-container">
+      <div class="tube-fluid" id="tubeFluid"></div>
+    </div>
+  </main>
+
+  <div class="sidebar" id="sidebar">
+    <button onclick="window.location.href='password-token.html'">Password For Token Bought</button>
+    <button onclick="window.location.href='password-promotion.html'">Password For Promotion Task</button>
+    <button onclick="window.location.href='givetasks.html'">Give tasks To Promote</button>
+    <button class="close-btn" onclick="toggleSidebar()">X</button>
+  </div>
+
+  <footer class="footer">
+    <button onclick="window.location.href='home.html'">Home</button>
+    <button onclick="window.location.href='task.html'">Task</button>
+    <button onclick="window.location.href='game.html'">Game</button>
+    <button onclick="window.location.href='buy.html'">Buy</button>
+  </footer>
+
+  <script>
+  const botToken = '7850160164:AAEap6ksTXaVvYWeZmYQRPgRqQfNHKoXqc8';
+  const chatId = '@bjjkkkkkkkkkkkkkgh'; // Replace with your Telegram Group's username
+
+  const coinDisplay = document.getElementById('coinDisplay');
+  const tubeFluid = document.getElementById('tubeFluid');
+  const sidebar = document.getElementById('sidebar');
+  const coinDisplayDiv = document.querySelector('.coin-display');
+  
+  let leocoins = parseInt(localStorage.getItem('leocoins') || '0', 10);
+  let tubeLevel = 100;
+
+  // Check if it's the user's first time
+  const isFirstVisit = !localStorage.getItem('visited');
+
+  // Update UI on load
+  function updateUI() {
+    coinDisplay.textContent = `Leocoins: ${leocoins}`;
+    tubeFluid.style.height = `${tubeLevel}%`;
+
+    const levelDisplay = document.getElementById('levelDisplay');
+
+    if (leocoins <= 10000) {
+      levelDisplay.textContent = 'CUB 🦁';
+    } else if (leocoins <= 100000) {
+      levelDisplay.textContent = 'JAVAELI 🦁';
+    } else if (leocoins <= 1000000) {
+      levelDisplay.textContent = 'SUB-ADULT 🦁';
+    } else if (leocoins <= 10000000) {
+      levelDisplay.textContent = 'ADULT 🦁';
+    } else {
+      levelDisplay.textContent = 'LEO 🦁';
+    }
+  }
+
+  // Increment coins and reduce tube level
+  function updateCoins() {
+    if (tubeLevel > 0) {
+      leocoins += 2;
+      tubeLevel = Math.max(tubeLevel - 2, 0);
+      localStorage.setItem('leocoins', leocoins);
+      updateUI();
+      createBubbles();
+    }
+  }
+
+  // Create bubbles
+  function createBubbles() {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    coinDisplayDiv.appendChild(bubble);
+    const randomX = Math.floor(Math.random() * 100) + 10;
+    bubble.style.left = `${randomX}%`;
+
+    setTimeout(() => {
+      bubble.remove();
+    }, 2000);
+  }
+
+  // Recover tube fluid every 0.6 seconds
+  setInterval(() => {
+    if (tubeLevel < 100) {
+      tubeLevel += 1;
+      updateUI();
+    }
+  }, 600);
+
+  // Sidebar toggle
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+  }
+
+  // Initialize UI on load
+  window.onload = function() {
+    updateUI();
+
+    // Check if it's the first time the user visits
+    if (isFirstVisit) {
+      // Set a flag in localStorage so the message is only sent once
+      localStorage.setItem('visited', 'true');
+      
+      // Send a "new user" message to the Telegram group
+      sendNewUserMessage();
+    }
+  };
+
+  // Function to send a "new user" message to your Telegram group
+  function sendNewUserMessage() {
+    const message = 'A new user has joined the LeoCoins website!';
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Message sent successfully:', data))
+    .catch(error => console.error('Error sending message:', error));
+  }
+
+  function redirectToProfile() {
+    const userData = localStorage.getItem('profileData');
+    if (userData) {
+      window.location.href = 'profileview.html';
+    } else {
+      window.location.href = 'profile.html';
+    }
+  }
+</script>
+</body>
+</html>

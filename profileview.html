@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile View</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Grenze', sans-serif;
+      background-color: #121212;
+      color: black;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Grenze', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #FFCC00;
+    }
+
+    /* Profile Section */
+    .profile-section {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-section img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .profile-info {
+      background-color: #292929;
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+      width: 300px;
+      text-align: center;
+    }
+
+    .profile-info p {
+      margin-bottom: 10px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border: none;
+      background-color: #FFCC00; /* Yellow */
+      color: #292928;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      width: 200px;
+    }
+
+    .action-buttons button:hover {
+      background: #FFB300;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #292929;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .modal button {
+      background: #FFCC00;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .modal button:hover {
+      background: #FFB300;
+    }
+
+    .withdraw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Back Arrow Icon -->
+    <span class="back-arrow" onclick="goHome()">←</span>
+    <h1>Profile View</h1>
+  </header>
+
+  <div class="profile-section">
+    <!-- Profile Picture -->
+    <img id="profile-picture" src="" alt="Profile Picture" />
+    <!-- Profile Info -->
+    <div class="profile-info">
+      <p id="full-name">Full Name: </p>
+      <p id="country">Country: </p>
+      <p id="telegram-username">Telegram Username: </p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button onclick="changeInfo()">Change Info</button>
+  </div>
+
+  <!-- Withdraw Buttons -->
+  <div class="withdraw-buttons">
+    <button onclick="withdraw()">Withdraw</button>
+    <button onclick="myTokens()">My Tokens</button>
+    <button onclick="exportAccount()">Export Account</button>
+    <button onclick="importAccount()">Import Account</button>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="modal">
+    <p>Profile Deleted Successfully!</p>
+    <button onclick="closeModal('success-modal')">Close</button>
+  </div>
+
+  <!-- Action Modals -->
+  <div id="withdraw-modal" class="modal">
+    <p>Withdraw clicked!</p>
+    <button onclick="closeModal('withdraw-modal')">Close</button>
+  </div>
+  
+  <div id="mytokens-modal" class="modal">
+    <p>My Tokens clicked!</p>
+    <button onclick="closeModal('mytokens-modal')">Close</button>
+  </div>
+
+  <div id="exportaccount-modal" class="modal">
+    <p>Export Account clicked!</p>
+    <button onclick="closeModal('exportaccount-modal')">Close</button>
+  </div>
+
+  <div id="importaccount-modal" class="modal">
+    <p>Import Account clicked!</p>
+    <button onclick="closeModal('importaccount-modal')">Close</button>
+  </div>
+
+  <script>
+    // Function to display the saved profile data
+    function displayProfile() {
+      const profileData = JSON.parse(localStorage.getItem('profileData'));
+      if (profileData) {
+        document.getElementById('profile-picture').src = profileData.profilePicture ? profileData.profilePicture : '';
+        document.getElementById('full-name').textContent = 'Full Name: ' + profileData.fullName;
+        document.getElementById('country').textContent = 'Country: ' + profileData.country;
+        document.getElementById('telegram-username').textContent = 'Telegram Username: ' + profileData.telegramUsername;
+      } else {
+        document.getElementById('profile-picture').src = '';
+        document.getElementById('full-name').textContent = 'No Profile Information';
+        document.getElementById('country').textContent = 'No Profile Information';
+        document.getElementById('telegram-username').textContent = 'No Profile Information';
+      }
+    }
+
+    // Function to handle 'Change Info' button
+    function changeInfo() {
+      // Clear localStorage and redirect to profileinsert.html
+      localStorage.removeItem('profileData');
+      localStorage.removeItem('profileId');
+      
+      // Show success modal
+      const successModal = document.getElementById('success-modal');
+      successModal.classList.add('active');
+
+      // Redirect to profileinsert.html after a short delay
+      setTimeout(function() {
+        window.location.href = 'profileinsert.html';
+      }, 2000); // Delay of 2 seconds
+    }
+
+    // Function to close modal
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('active');
+    }
+
+    // Function to navigate to home.html when back arrow is clicked
+    function goHome() {
+      window.location.href = 'home.html';
+    }
+
+    // Function to handle 'Withdraw' button
+    function withdraw() {
+      window.location.href = 'withdraw.html'; // Redirect to withdraw page
+    }
+
+    // Function to handle 'My Tokens' button
+    function myTokens() {
+      window.location.href = 'mytokens.html'; // Redirect to my tokens page
+    }
+
+    // Function to handle 'Export Account' button
+    function exportAccount() {
+      window.location.href = 'exportaccount.html'; // Redirect to export account page
+    }
+
+    // Function to handle 'Import Account' button
+    function importAccount() {
+      window.location.href = 'importaccount.html'; // Redirect to import account page
+    }
+
+    // Display the profile data when the page loads
+    window.onload = displayProfile;
+  </script>
+</body>
+</html>
